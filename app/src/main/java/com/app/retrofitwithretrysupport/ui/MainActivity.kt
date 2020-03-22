@@ -16,6 +16,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), Callback<SearchResultModel?> {
+    var call: Call<SearchResultModel?>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,7 +40,8 @@ class MainActivity : AppCompatActivity(), Callback<SearchResultModel?> {
 
     private fun startSearching(searchQuery: String?) {
         val retrofit = ApiProvider.createService(ApiService::class.java)
-        val call = retrofit.getResult(searchQuery)
+        call?.cancel()
+        call = retrofit.getResult(searchQuery)
         ApiHelper.enqueueWithRetry(call, this)
     }
 

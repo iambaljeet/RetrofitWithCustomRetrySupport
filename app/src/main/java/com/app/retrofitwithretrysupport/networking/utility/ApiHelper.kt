@@ -8,11 +8,11 @@ object ApiHelper {
     private const val DEFAULT_RETRIES = 3
 
     fun <T> enqueueWithRetry(
-        call: Call<T>,
+        call: Call<T>?,
         callback: Callback<T>,
         retryCount: Int = DEFAULT_RETRIES
     ) {
-        call.enqueue(object : RetryableCallback<T>(call, retryCount) {
+        call?.enqueue(object : RetryableCallback<T>(call, retryCount) {
             override fun onFinalResponse(call: Call<T>, response: Response<T>) {
                 callback.onResponse(call, response)
             }

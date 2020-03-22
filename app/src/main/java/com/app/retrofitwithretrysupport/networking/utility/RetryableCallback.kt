@@ -5,7 +5,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-abstract class RetryableCallback<T>(private val call: Call<T>, totalRetries: Int) :
+abstract class RetryableCallback<T>(private val call: Call<T>?, totalRetries: Int) :
     Callback<T> {
     private var totalRetries = 3
     private var retryCount = 0
@@ -37,7 +37,7 @@ abstract class RetryableCallback<T>(private val call: Call<T>, totalRetries: Int
     open fun onFinalFailure(call: Call<T>, t: Throwable) {}
 
     private fun retry() {
-        call.clone().enqueue(this)
+        call?.clone()?.enqueue(this)
     }
 
     companion object {
